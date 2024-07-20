@@ -3,23 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced Periodic Table</title>
+    <title>Advanced Periodic Table with Customization</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="controls">
         <input type="text" id="search" placeholder="Search elements...">
-        <button onclick="filterCategory('nonmetal')">Nonmetals</button>
-        <button onclick="filterCategory('metal')">Metals</button>
-        <button onclick="filterCategory('all')">Show All</button>
+        <label for="category-filter">Category:</label>
+        <select id="category-filter">
+            <option value="all">All</option>
+            <option value="nonmetal">Nonmetals</option>
+            <option value="metal">Metals</option>
+            <option value="noble gas">Noble Gases</option>
+        </select>
+        <label for="atomic-range">Atomic Number Range:</label>
+        <input type="number" id="atomic-min" placeholder="Min" min="1">
+        <input type="number" id="atomic-max" placeholder="Max" min="1">
+        <button onclick="applyFilters()">Apply Filters</button>
         <button onclick="sortTable('atomic')">Sort by Atomic Number</button>
         <button onclick="sortTable('name')">Sort by Name</button>
+        <button onclick="toggleLayout()">Toggle Layout</button>
     </div>
-    <div id="periodic-table" class="periodic-table"></div>
+    <div id="periodic-table" class="periodic-table grid-layout"></div>
     <div id="element-info-modal" class="element-info-modal">
         <div class="modal-content">
             <span class="close-button" onclick="closeModal()">&times;</span>
             <div id="element-info"></div>
+        </div>
+    </div>
+    <div id="element-comparison" class="element-comparison">
+        <div class="comparison-info" id="comparison-info-1">
+            <h3>Element 1</h3>
+        </div>
+        <div class="comparison-info" id="comparison-info-2">
+            <h3>Element 2</h3>
         </div>
     </div>
     <script src="script.js"></script>

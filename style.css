@@ -1,73 +1,3 @@
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f4f4f4;
-}
-
-.controls {
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-input[type="text"] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 200px;
-}
-
-button {
-    padding: 10px;
-    margin: 5px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-.periodic-table {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-    gap: 5px;
-    max-width: 1000px;
-    margin: 0 auto;
-}
-
-.element {
-    background: #d3d3d3;
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-.element:hover {
-    background: #b0b0b0;
-}
-
-.element-info {
-    margin-top: 20px;
-    padding: 10px;
-    background: #fff;
-    border: 1px solid #ccc;
-    max-width: 600px;
-    text-align: center;
-    font-size: 16px;
-}
 /* Add previous CSS and extend it */
 
 body {
@@ -87,12 +17,13 @@ body {
     align-items: center;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"],
+select {
     padding: 10px;
-    margin-bottom: 10px;
+    margin: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 200px;
 }
 
 button {
@@ -115,6 +46,14 @@ button:hover {
     gap: 5px;
     max-width: 1000px;
     margin: 0 auto;
+}
+
+.grid-layout {
+    display: grid;
+}
+
+.list-layout {
+    display: block;
 }
 
 .element {
@@ -158,4 +97,19 @@ button:hover {
     right: 10px;
     font-size: 24px;
     cursor: pointer;
+}
+
+.element-comparison {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    max-width: 1000px;
+}
+
+.comparison-info {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 4px;
+    width: 45%;
 }
