@@ -1,3 +1,4 @@
+//js
 // Full data for periodic table with correct positions
 const elementsData = [
     { symbol: 'H', name: 'Hydrogen', atomic: 1, category: 'nonmetal', info: 'The lightest element.', position: { row: 1, col: 1 } },
@@ -118,11 +119,12 @@ const elementsData = [
     { symbol: 'Lv', name: 'Livermorium', atomic: 116, category: 'metal', info: 'Used in research.', position: { row: 10, col: 4 } },
     { symbol: 'Ts', name: 'Tennessine', atomic: 117, category: 'nonmetal', info: 'Used in research.', position: { row: 10, col: 5 } },
     { symbol: 'Og', name: 'Oganesson', atomic: 118, category: 'noble gas', info: 'Used in research.', position: { row: 10, col: 6 } }
-  ];
-
+  ];  
+  
   function createTable() {
     const table = document.getElementById('periodic-table');
-
+    table.innerHTML = '';
+  
     // Create table headers
     const headerRow = document.createElement('tr');
     const headers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18'];
@@ -132,27 +134,82 @@ const elementsData = [
       headerRow.appendChild(th);
     });
     table.appendChild(headerRow);
-
+  
     // Create table rows
     for (let row = 1; row <= 10; row++) {
       const tr = document.createElement('tr');
       for (let col = 1; col <= 18; col++) {
         const td = document.createElement('td');
         td.id = `cell-${row}-${col}`;
-        const element = elements.find(el => el.position.row === row && el.position.col === col);
-        if (element) {
-          td.innerHTML = `<div class="element ${element.category}">
-                            <span class="symbol">${element.symbol}</span>
-                            <span class="atomic">${element.atomic}</span>
-                            <span class="name">${element.name}</span>
-                          </div>`;
-          td.className = 'element-cell';
-        }
+        td.className = 'element-cell';  // Ensure this class is set for every cell
         tr.appendChild(td);
       }
       table.appendChild(tr);
     }
+  
+    // Populate table with elements after creating the structure
+    populateTable();
   }
-
+  
+  function populateTable() {
+    const tableCells = document.querySelectorAll('.element-cell');
+  
+    elements.forEach(element => {
+      const cell = document.getElementById(`cell-${element.position.row}-${element.position.col}`);
+      if (cell) {
+        cell.innerHTML = `<div class="element ${element.category}" onclick="showDetails('${element.symbol}')">
+                            <span class="symbol">${element.symbol}</span>
+                            <span class="atomic">${element.atomic}</span>
+                            <span class="name">${element.name}</span>
+                          </div>`;
+      }
+    });
+  }
+  
+  function showDetails(symbol) {
+    const element = elements.find(el => el.symbol === symbol);
+    if (element) {
+      alert(`Element: ${element.name}\nSymbol: ${element.symbol}\nAtomic Number: ${element.atomic}\nInfo: ${element.info}`);
+    }
+  }
+  
+  function filterTable() {
+    const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+    const selectedCategory = document.getElementById('category-filter').value;
+  
+    const tableCells = document.querySelectorAll('.element-cell');
+  
+    tableCells.forEach(cell => {
+      const elementDiv = cell.querySelector('.element');
+      const element = elements.find(el => `cell-${el.position.row}-${el.position.col}` === cell.id);
+      if (element) {
+        const symbol = element.symbol.toLowerCase();
+        const name = element.name.toLowerCase();
+        const category = element.category;
+  
+        const matchesSearch = symbol.includes(searchTerm) || name.includes(searchTerm);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
+  
+        if (matchesSearch && matchesCategory) {
+          cell.style.display = '';
+          cell.innerHTML = `<div class="element ${element.category}" onclick="showDetails('${element.symbol}')">
+                              <span class="symbol">${element.symbol}</span>
+                              <span class="atomic">${element.atomic}</span>
+                              <span class="name">${element.name}</span>
+                            </div>`;
+        } else {
+          cell.style.display = 'none';
+          cell.innerHTML = ''; // Leave cell blank if not matching
+        }
+      } else {
+        cell.style.display = 'none';
+        cell.innerHTML = ''; // Leave cell blank if not matching
+      }
+    });
+  }
+  
+  document.getElementById('search-bar').addEventListener('input', filterTable);
+  document.getElementById('category-filter').addEventListener('change', filterTable);
+  
   createTable();
-
+  

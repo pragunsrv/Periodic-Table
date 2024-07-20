@@ -57,9 +57,38 @@
     .noble { background-color: #cfcfcf; }
     .lanthanide { background-color: #d0f0c0; }
     .actinide { background-color: #ffcccb; }
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    #search-bar {
+      padding: 8px;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    #category-filter {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
   </style>
 </head>
 <body>
+
+<div class="controls">
+  <input type="text" id="search-bar" placeholder="Search for elements...">
+  <select id="category-filter">
+    <option value="">All Categories</option>
+    <option value="metal">Metals</option>
+    <option value="nonmetal">Nonmetals</option>
+    <option value="metalloid">Metalloids</option>
+    <option value="noble">Noble Gases</option>
+    <option value="lanthanide">Lanthanides</option>
+    <option value="actinide">Actinides</option>
+  </select>
+</div>
 
 <table id="periodic-table"></table>
 
@@ -187,6 +216,7 @@
 
   function createTable() {
     const table = document.getElementById('periodic-table');
+    table.innerHTML = '';
 
     // Create table headers
     const headerRow = document.createElement('tr');
@@ -204,19 +234,28 @@
       for (let col = 1; col <= 18; col++) {
         const td = document.createElement('td');
         td.id = `cell-${row}-${col}`;
-        const element = elements.find(el => el.position.row === row && el.position.col === col);
-        if (element) {
-          td.innerHTML = `<div class="element ${element.category}" onclick="showDetails('${element.symbol}')">
-                            <span class="symbol">${element.symbol}</span>
-                            <span class="atomic">${element.atomic}</span>
-                            <span class="name">${element.name}</span>
-                          </div>`;
-          td.className = 'element-cell';
-        }
+        td.className = 'element-cell'; // Ensure this class is set for every cell
         tr.appendChild(td);
       }
       table.appendChild(tr);
     }
+
+    populateTable();
+  }
+
+  function populateTable() {
+    const tableCells = document.querySelectorAll('.element-cell');
+
+    elements.forEach(element => {
+      const cell = document.getElementById(`cell-${element.position.row}-${element.position.col}`);
+      if (cell) {
+        cell.innerHTML = `<div class="element ${element.category}" onclick="showDetails('${element.symbol}')">
+                            <span class="symbol">${element.symbol}</span>
+                            <span class="atomic">${element.atomic}</span>
+                            <span class="name">${element.name}</span>
+                          </div>`;
+      }
+    });
   }
 
   function showDetails(symbol) {
@@ -226,9 +265,46 @@
     }
   }
 
+  function filterTable() {
+    const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+    const selectedCategory = document.getElementById('category-filter').value;
+
+    const tableCells = document.querySelectorAll('.element-cell');
+
+    tableCells.forEach(cell => {
+      const elementDiv = cell.querySelector('.element');
+      const element = elements.find(el => `cell-${el.position.row}-${el.position.col}` === cell.id);
+      if (element) {
+        const symbol = element.symbol.toLowerCase();
+        const name = element.name.toLowerCase();
+        const category = element.category;
+
+        const matchesSearch = symbol.includes(searchTerm) || name.includes(searchTerm);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
+
+        if (matchesSearch && matchesCategory) {
+          cell.style.display = '';
+          cell.innerHTML = `<div class="element ${element.category}" onclick="showDetails('${element.symbol}')">
+                              <span class="symbol">${element.symbol}</span>
+                              <span class="atomic">${element.atomic}</span>
+                              <span class="name">${element.name}</span>
+                            </div>`;
+        } else {
+          cell.style.display = 'none';
+          cell.innerHTML = ''; // Leave cell blank if not matching
+        }
+      } else {
+        cell.style.display = 'none';
+        cell.innerHTML = ''; // Leave cell blank if not matching
+      }
+    });
+  }
+
+  document.getElementById('search-bar').addEventListener('input', filterTable);
+  document.getElementById('category-filter').addEventListener('change', filterTable);
+
   createTable();
 </script>
 
 </body>
 </html>
-
