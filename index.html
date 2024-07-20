@@ -3,21 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Periodic Table with Details</title>
+    <title>Advanced Periodic Table</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="controls">
+        <input type="text" id="search" placeholder="Search elements...">
         <button onclick="filterCategory('nonmetal')">Nonmetals</button>
         <button onclick="filterCategory('metal')">Metals</button>
         <button onclick="filterCategory('all')">Show All</button>
+        <button onclick="sortTable('atomic')">Sort by Atomic Number</button>
+        <button onclick="sortTable('name')">Sort by Name</button>
     </div>
-    <div class="periodic-table">
-        <div class="element metal" data-symbol="H" data-name="Hydrogen" data-atomic="1" data-info="The lightest element.">H</div>
-        <div class="element nonmetal" data-symbol="He" data-name="Helium" data-atomic="2" data-info="A noble gas used in balloons.">He</div>
-        <!-- Add more elements as needed -->
+    <div id="periodic-table" class="periodic-table"></div>
+    <div id="element-info-modal" class="element-info-modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <div id="element-info"></div>
+        </div>
     </div>
-    <div id="element-info" class="element-info"></div>
     <script src="script.js"></script>
 </body>
 </html>
