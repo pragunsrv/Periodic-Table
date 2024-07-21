@@ -261,7 +261,13 @@
   function showDetails(symbol) {
     const element = elements.find(el => el.symbol === symbol);
     if (element) {
-      alert(`Element: ${element.name}\nSymbol: ${element.symbol}\nAtomic Number: ${element.atomic}\nInfo: ${element.info}`);
+      var detail = `Element: ${element.name}\nSymbol: ${element.symbol}\nAtomic Number: ${element.atomic}\nInfo: ${element.info}`
+      alert(detail);
+      navigator.clipboard.writeText(detail).then(() => {
+        console.log('Content copied to clipboard.');
+      },() => {
+        console.error('Failed to copy.');
+      });
     }
   }
 
